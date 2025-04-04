@@ -1,74 +1,76 @@
-import { Image, StyleSheet, Platform } from 'react-native';
+import {
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import React, { useState } from "react";
+import ScreenWrapper from "@/components/ScreenWrapper";
+import { useStore } from "@/store/store";
+import { CategoryList, getCategoriesFromData, verticalScale } from "@/utils/styling";
+import Header from "@/components/Header";
+import * as Icons from "phosphor-react-native";
+import Typo from "@/components/Typo";
+import { COLORS, FONTFAMILY, FONTSIZE, SPACING, spacingY } from "@/constants/theme";
+import CustomIcon from "@/components/CustomIcon";
+import Input from "@/components/Input";
 
-import { HelloWave } from '@/components/HelloWave';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
-
-export default function HomeScreen() {
-  return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12'
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-        <ThemedText>
-          Tap the Explore tab to learn more about what's included in this starter app.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          When you're ready, run{' '}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+const Home = () => {
+  const CoffeeList = useStore((state: any) => state.CoffeeList);
+  const BeanList = useStore((state: any) => state.BeanList);
+  const [searchText, setSearchText] = useState("");
+  const [categories, setCategories] = useState(
+    getCategoriesFromData(CoffeeList)
   );
-}
+  const [categoryIndex, setCategoryIndex] = useState({
+    index: 0,
+    category: categories[0],
+  });
+  const [sortedCoffee, setSortedCoffee] = useState(
+    CategoryList(categoryIndex.category, CoffeeList)
+  );
+  return (
+    <ScreenWrapper>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ flexGrow: 1 }}
+      >
+        <Header />
+        <Typo
+          size={FONTSIZE.size_24}
+          color={COLORS.primaryWhiteHex}
+          fontWeight={"700"}
+          style={{
+            paddingLeft: SPACING.space_12,
+            fontFamily: FONTFAMILY.poppins_semibold,
+          }}
+        >
+          {" "}
+          Enjoy the finest coffee,{"\n"} made just for you
+        </Typo>
+        <View style={styles.InputContainer}>
+          <TouchableOpacity onPress={()=>{}}>
+            <Input icon={Icons.MagnifyingGlass} color={ searchText.length > 0
+                  ? COLORS.primaryOrangeHex
+              : COLORS.primaryLightGreyHex} size={FONTSIZE.size_18} placeholder="Find Your Coffee..."
+              value={searchText}
+                  onChangeText={(value) =>
+                    setSearchText(value)
+                  }/>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
+    </ScreenWrapper>
+  );
+};
+
+export default Home;
 
 const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
-  },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
-  },
+  InputContainer: {
+
+    margin: SPACING.space_30,
+   
+  }
 });

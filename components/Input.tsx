@@ -4,6 +4,7 @@ import { InputProps } from "@/type";
 import { COLORS, BORDERRADIUS, spacingX, FONTSIZE } from "@/constants/theme";
 import { verticalScale } from "@/utils/styling";
 import CustomIcon from "./CustomIcon";
+import * as Icons from "phosphor-react-native"
 
 const Input = (props: InputProps) => {
   return (
@@ -23,7 +24,16 @@ const Input = (props: InputProps) => {
         style={[styles.input, props.inputStyle && props.inputStyle]}
         placeholderTextColor={COLORS.secondaryLightGreyHex}
         ref={props.inputRef && props.inputRef}
-      />
+          />
+          {props.searchText.length > 0 && (
+               <CustomIcon
+               iconSize={props.size}
+               icon={Icons.X}
+               iconWeight="regular"
+                  iconColor="gray"
+                  onPress={props.onPress}
+             /> 
+          )}
     </View>
   );
 };

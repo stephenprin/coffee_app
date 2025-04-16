@@ -2,7 +2,7 @@ import { StyleSheet, Text, View } from "react-native";
 import React from "react";
 import { Tabs } from "expo-router";
 import CustomTabs from "@/components/CustomTabs";
-import { BlurView } from "expo-blur";
+import { COLORS } from "@/constants/theme";
 
 const _layout = () => {
   return (
@@ -12,11 +12,7 @@ const _layout = () => {
         headerShown: false,
         tabBarHideOnKeyboard: true,
         tabBarShowLabel: false,
-        tabBarBackground: () => (
-          <View style={styles.blurContainer}>
-            <BlurView intensity={50} tint="light" style={styles.blurView} />
-          </View>
-        ),
+      
       }}
     >
       <Tabs.Screen name="index" />
@@ -31,13 +27,5 @@ const _layout = () => {
 export default _layout;
 
 const styles = StyleSheet.create({
-  blurContainer: {
-    position: "absolute",
-    width: "100%",
-    height: "100%",
-    overflow: "hidden",
-  },
-  blurView: {
-    flex: 1,
-  },
+  
 });

@@ -41,7 +41,7 @@ export const verticalScale = (size: number) =>
     return categories;
   };
 
-export const CategoryList = (category: string, data: Coffee[])=>{
+export const getCategoryList = (category: string, data: Coffee[])=>{
 
   if (category == 'All') {
     return data

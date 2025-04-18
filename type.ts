@@ -60,6 +60,7 @@ export type GradientButtonProps = {
   iconSize?: number;
   color: string;
   icon: React.ElementType | null;
+  onPress?: () => void;
 };
 export interface InputProps extends TextInputProps {
   icon?: React.ElementType | null;

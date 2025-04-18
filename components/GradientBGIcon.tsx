@@ -10,10 +10,10 @@ import { LinearGradient } from 'expo-linear-gradient';
 import * as Icons from "phosphor-react-native"
 import CustomIcon from "./CustomIcon";
 
-const GradientBGIcon = ({ style, icon, color, iconSize = 24 }: GradientButtonProps) => {
+const GradientBGIcon = ({ style, icon, color, iconSize = 24 , onPress}: GradientButtonProps) => {
 const router = useRouter();
 return (
-    <TouchableOpacity onPress={() => router.back()} style={[style]}>
+    <TouchableOpacity onPress={onPress} style={[style]}>
      <View style={styles.container}>
      <LinearGradient
             start={{ x: 0, y: 0 }} 
@@ -21,7 +21,7 @@ return (
             colors={[COLORS.primaryGreyHex, COLORS.primaryBlackHex]}
             style={styles. backgroundLinear}
                         >
-                    {icon && <CustomIcon icon={icon} iconSize={iconSize} iconColor={color} iconWeight="bold" />}
+                    {icon && <CustomIcon icon={icon} iconSize={iconSize} iconColor={color} iconWeight="fill" />}
         </LinearGradient>
      </View>
     </TouchableOpacity>

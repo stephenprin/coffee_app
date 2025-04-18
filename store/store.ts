@@ -1,129 +1,133 @@
-import { create } from "zustand"
-import { produce } from "immer"
-import { persist, createJSONStorage } from 'zustand/middleware'
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { create } from "zustand";
+import { produce } from "immer";
+import { persist, createJSONStorage } from "zustand/middleware";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import CoffeeData from "@/data/CoffeeData";
 import BeansData from "@/data/BeansData";
 import Favorite from "@/app/(tabs)/favorite";
 
 export const useStore = create(
-    persist((set, get) => ({
-        CoffeeList: CoffeeData,
-        BeansList: BeansData,
-        CartPrice: 0,
-        FavoritesList: [],
-        CartList: [],
-        OrderHistoryList: [],
-        addToCart: (cartItem: any) => set(produce((state: any) => {
+  persist(
+    (set, get) => ({
+      CoffeeList: CoffeeData,
+      BeansList: BeansData,
+      CartPrice: 0,
+      FavoritesList: [],
+      CartList: [],
+      OrderHistoryList: [],
+      addToCart: (cartItem: any) =>
+        set(
+          produce((state: any) => {
             let found = false;
-            for(let i = 0; i < state.CartList.length; i++) {
-                if (state.CartList[i].id === cartItem.id) {
-                    found = true;
-                    
-                    let size = false;
-                    for (let j = 0; j < state.CartList[i].price.length; j++) {
-                        if(state.CartList[i].price[j].size === cartItem.price[0].size) {
-                            size = true;
-                            state.CartList[i].price[j].quantity += cartItem.quantity;
-                            break;
-                          
-                        }
-                    }
-                    if (size == false) {
-                        state.CartList[i].price.push(cartItem.price[0]);
-                    }
+            for (let i = 0; i < state.CartList.length; i++) {
+              if (state.CartList[i].id === cartItem.id) {
+                found = true;
 
-                    state.CartList[i].price.sort((a: any, b: any) => { 
-                        if(a.size > b.size) {
-                            return -1;
-                        }
-                        if(a.size < b.size) {
-                            return 1;
-                        }
-                        return 0;
-                    })
+                let size = false;
+                for (let j = 0; j < state.CartList[i].price.length; j++) {
+                  if (
+                    state.CartList[i].price[j].size === cartItem.price[0].size
+                  ) {
+                    size = true;
+                    state.CartList[i].price[j].quantity += cartItem.quantity;
+                    break;
+                  }
                 }
-             
-            }
-            if(!found) {
-                state.CartList.push(cartItem);
-            }
-        })),
+                if (size == false) {
+                  state.CartList[i].price.push(cartItem.price[0]);
+                }
 
-        calculateCartPrice: () => set(produce((state: any) => {
+                state.CartList[i].price.sort((a: any, b: any) => {
+                  if (a.size > b.size) {
+                    return -1;
+                  }
+                  if (a.size < b.size) {
+                    return 1;
+                  }
+                  return 0;
+                });
+              }
+            }
+            if (!found) {
+              state.CartList.push(cartItem);
+            }
+          })
+        ),
+
+      calculateCartPrice: () =>
+        set(
+          produce((state: any) => {
             let totalPrice = 0;
             for (let i = 0; i < state.CartList.length; i++) {
-                let tempPrice = 0;
-                for (let j = 0; j < state.CartList[i].price.length; j++) {
-                    tempPrice += tempPrice+ parseFloat(state.CartList[i].price[j].quantity) * state.CartList[i].price[j].price;
-                }
-                state.CartList[i].ItemPrice = tempPrice.toFixed(2).toString();
-                totalPrice += parseFloat(tempPrice.toFixed(2))
+              let tempPrice = 0;
+              for (let j = 0; j < state.CartList[i].price.length; j++) {
+                tempPrice +=
+                  tempPrice +
+                  parseFloat(state.CartList[i].price[j].quantity) *
+                    state.CartList[i].price[j].price;
+              }
+              state.CartList[i].ItemPrice = tempPrice.toFixed(2).toString();
+              totalPrice += parseFloat(tempPrice.toFixed(2));
             }
             state.CartPrice = totalPrice.toFixed(2).toString();
-        })),
-        addToFavouriteList: (type: string, id: string) => set(produce((state: any) => {
-            if (type == "Coffee") {
-                for (let i = 0; i < state.CoffeeList.length; i++){
-                    if(state.CoffeeList[i].id == id) {
-                        if(state.CoffeeList[i].favourite == false) {
-                            state.CoffeeList[i].favourite = true;
-                            state.FavoritesList.unshift(state.CoffeeList[i]);
-                        }
-                    }
-                    break;
+          })
+        ),
+      addToFavouriteList: (type: string, id: string) =>
+        set(
+          produce((state: any) => {
+            if (type === "Coffee") {
+              for (let i = 0; i < state.CoffeeList.length; i++) {
+                if (state.CoffeeList[i].id === id) {
+                  if (!state.CoffeeList[i].favourite) {
+                    state.CoffeeList[i].favourite = true;
+                    state.FavoritesList.unshift(state.CoffeeList[i]);
+                  }
+                  break;
                 }
-            } else if (type == 'Bean') {
-                for (let i = 0; i < state.BeansList.length; i++){
-                    if(state.BeansList[i].id == id) {
-                        if(state.BeansList[i].favourite == false) {
-                            state.BeansList[i].favourite = true;
-                            state.FavoritesList.unshift(state.BeansList[i]);
-                        }
-                    }
-                    break;
+              }
+            } else if (type === "Bean") {
+              for (let i = 0; i < state.BeansList.length; i++) {
+                if (state.BeansList[i].id === id) {
+                  if (!state.BeansList[i].favourite) {
+                    state.BeansList[i].favourite = true;
+                    state.FavoritesList.unshift(state.BeansList[i]);
+                  }
+                  break;
                 }
-                
+              }
             }
-        })),
+          })
+        ),
 
-        deleteFromFavouriteList: (type:string, id: string) => set(produce((state: any) => {
-            if(type == "Coffee") {
-                for (let i = 0; i < state.FavoritesList.length; i++){
-                    if(state.FavoritesList[i].id == id) {
-                       if(state.FavoritesList[i].favourite == true) {
-                            state.FavoritesList[i].favourite = false;
-                            
-                       }
-                        break;
-                    }
-                }
-            }else if(type == "Bean") {
-                for (let i = 0; i < state.FavoritesList.length; i++){
-                    if(state.FavoritesList[i].id == id) {
-                        if(state.FavoritesList[i].favourite == true) {
-                            state.FavoritesList[i].favourite = false;
-                            
-                        }
-                        break;
-                    }
-                }
+      deleteFromFavouriteList: (type: string, id: string) =>
+        set(
+          produce((state: any) => {
+            
+            for (let i = 0; i < state.FavoritesList.length; i++) {
+              if (state.FavoritesList[i].id === id) {
+                state.FavoritesList[i].favourite = false;
+                state.FavoritesList.splice(i, 1);
+                break;
+              }
             }
-
-            let spliceIndex = -1;
-            for (let i = 0; i < state.FavoritesList.length; i++){
-                if(state.FavoritesList[i].id == id) {
-                    spliceIndex = i;
-                    break;
+            if (type === "Coffee") {
+              for (let i = 0; i < state.CoffeeList.length; i++) {
+                if (state.CoffeeList[i].id === id) {
+                  state.CoffeeList[i].favourite = false;
+                  break;
                 }
+              }
+            } else if (type === "Bean") {
+              for (let i = 0; i < state.BeansList.length; i++) {
+                if (state.BeansList[i].id === id) {
+                  state.BeansList[i].favourite = false;
+                  break;
+                }
+              }
             }
-            state.FavoritesList.splice(spliceIndex, 1);
-
-        }))
-        
-
-        
-       
-    }), { name: 'coffee-app', storage: createJSONStorage(() => AsyncStorage) }
-),
-)
+          })
+        ),
+    }),
+    { name: "coffee-app", storage: createJSONStorage(() => AsyncStorage) }
+  )
+);

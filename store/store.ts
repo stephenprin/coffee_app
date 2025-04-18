@@ -24,20 +24,20 @@ export const useStore = create(
                 found = true;
 
                 let size = false;
-                for (let j = 0; j < state.CartList[i].price.length; j++) {
+                for (let j = 0; j < state.CartList[i].prices.length; j++) {
                   if (
-                    state.CartList[i].price[j].size === cartItem.price[0].size
+                    state.CartList[i].prices[j].size === cartItem.prices[0].size
                   ) {
                     size = true;
-                    state.CartList[i].price[j].quantity += cartItem.quantity;
+                    state.CartList[i].prices[j].quantity += cartItem.quantity;
                     break;
                   }
                 }
                 if (size == false) {
-                  state.CartList[i].price.push(cartItem.price[0]);
+                  state.CartList[i].prices.push(cartItem.price[0]);
                 }
 
-                state.CartList[i].price.sort((a: any, b: any) => {
+                state.CartList[i].prices.sort((a: any, b: any) => {
                   if (a.size > b.size) {
                     return -1;
                   }
@@ -60,11 +60,11 @@ export const useStore = create(
             let totalPrice = 0;
             for (let i = 0; i < state.CartList.length; i++) {
               let tempPrice = 0;
-              for (let j = 0; j < state.CartList[i].price.length; j++) {
+              for (let j = 0; j < state.CartList[i].prices.length; j++) {
                 tempPrice +=
                   tempPrice +
-                  parseFloat(state.CartList[i].price[j].quantity) *
-                    state.CartList[i].price[j].price;
+                  parseFloat(state.CartList[i].prices[j].quantity) *
+                    state.CartList[i].prices[j].price;
               }
               state.CartList[i].ItemPrice = tempPrice.toFixed(2).toString();
               totalPrice += parseFloat(tempPrice.toFixed(2));

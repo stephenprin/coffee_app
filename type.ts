@@ -53,6 +53,7 @@ export type TypoProps = {
   children: any | null;
   style?: TextStyle | TextStyle[];
   textProps?: TextProps;
+  numberOfLines?: number;
 };
 
 export type GradientButtonProps = {

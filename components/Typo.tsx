@@ -9,6 +9,7 @@ const Typo = ({
   color = COLORS.primaryWhiteHex,
   fontWeight = "400",
   children,
+  numberOfLines,
   style,
   textProps={},
 }: TypoProps) => {
@@ -17,7 +18,7 @@ const Typo = ({
         color,
         fontWeight,
     }
-    return <Text style={[textStyle, style]} {...textProps}>{children }</Text>;
+    return <Text numberOfLines={numberOfLines} style={[textStyle, style]} {...textProps}>{children }</Text>;
 };
 
 export default Typo;

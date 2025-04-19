@@ -4,6 +4,7 @@ import {
   ScrollView,
   StyleSheet,
   Text,
+  ToastAndroid,
   TouchableOpacity,
   View,
 } from "react-native";
@@ -31,6 +32,8 @@ import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 import debounce from "lodash.debounce";
 import { Coffee } from "@/type";
 import { useRouter } from "expo-router";
+import Toast from 'react-native-toast-message';
+
 
 const Home = () => {
   const CoffeeList = useStore((state: any) => state.CoffeeList);
@@ -49,6 +52,8 @@ const Home = () => {
   const router= useRouter()
 
   const tabBarHeight = useBottomTabBarHeight();
+  const addToCart = useStore((state: any) => state.addToCart);
+  const calculateCartPrice= useStore((state: any) => state.calculateCartPrice);
 
   const searchCoffee = (search: string) => {
     const trimmed = search.trim().toLowerCase();
@@ -69,6 +74,36 @@ const Home = () => {
   };
 
   const debouncedSearch = useCallback(debounce(searchCoffee, 300), []);
+
+  const CoffeeCardAddToCart = ({
+    id,
+    index,
+    type,
+    name,
+    roasted,
+    imagelink_square,
+    special_ingredient,
+    ingredients,
+    prices
+  }:any) => {
+    addToCart({ id,
+      type,
+      index,
+      name,
+      roasted,
+      imagelink_square,
+      special_ingredient,
+      ingredients,
+      prices
+    });
+    calculateCartPrice()
+    Toast.show({
+      type: 'success',
+      text1: `${name} added to cart`,
+      text2: `The ${name} has been successfully added.`,
+    });
+
+  };
 
   useEffect(() => {
     debouncedSearch(searchText);
@@ -201,7 +236,7 @@ const Home = () => {
                   favourite={item.favourite}
                   type={item.type}
                   index={item.index}
-                  buttonPressHandler={() => {}}
+                  buttonPressHandler={CoffeeCardAddToCart}
                 />
               </TouchableOpacity>
             );
@@ -253,7 +288,7 @@ const Home = () => {
                   favourite={item.favourite}
                   type={item.type}
                   index={item.index}
-                  buttonPressHandler={() => {}}
+                  buttonPressHandler={CoffeeCardAddToCart}
                 />
               </TouchableOpacity>
             );

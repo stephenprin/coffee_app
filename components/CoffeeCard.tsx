@@ -99,7 +99,19 @@ const CoffeeCard = ({
             {prices.price}
           </Typo>
         </View>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => {
+          buttonPressHandler({
+            id,
+            index,
+            type,
+            name,
+            roasted,
+            imagelink_square,
+            special_ingredient,
+            ingredients,
+            prices:[{...prices, quantity: 1}],
+          });
+        }}>
           <BGIcon
             icon={Icons.Plus}
             color={COLORS.primaryWhiteHex}

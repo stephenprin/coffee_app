@@ -34,7 +34,7 @@ export const useStore = create(
                   }
                 }
                 if (size == false) {
-                  state.CartList[i].prices.push(cartItem.price[0]);
+                  state.CartList[i].prices.push(cartItem.prices[0]);
                 }
 
                 state.CartList[i].prices.sort((a: any, b: any) => {

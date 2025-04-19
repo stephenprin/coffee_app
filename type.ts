@@ -24,7 +24,7 @@ export type Coffee = {
   imagelink_portrait?: ImageSourcePropType;
   ingredients: string;
   special_ingredient: string;
-  prices: Price[];
+  prices: Price;
   average_rating: number;
   ratings_count: string;
   favourite: boolean;

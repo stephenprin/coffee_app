@@ -26,7 +26,7 @@ const CustomIcon: React.FC<BackButtonProps> = ({
 
   return (
     <TouchableOpacity onPress={onPress} style={[style]}>
-      <Icon size={verticalScale(iconSize)} color={iconColor} weight={iconWeight} />
+      <Icon size={verticalScale(iconSize)} color={iconColor} weight={iconWeight} iconWeight={ iconWeight} />
     </TouchableOpacity>
   );
 };

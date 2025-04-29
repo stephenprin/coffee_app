@@ -8,6 +8,7 @@ const Typo = ({
   size,
   color = COLORS.primaryWhiteHex,
   fontWeight = "400",
+  fontFamily,
   children,
   numberOfLines,
   style,
@@ -16,7 +17,8 @@ const Typo = ({
     const textStyle: TextStyle = {
         fontSize: size? verticalScale(size) : FONTSIZE.size_16,
         color,
-        fontWeight,
+      fontWeight,
+      fontFamily
     }
     return <Text numberOfLines={numberOfLines} style={[textStyle, style]} {...textProps}>{children }</Text>;
 };

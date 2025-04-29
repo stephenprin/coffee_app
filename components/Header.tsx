@@ -15,7 +15,7 @@ const Header = ({ title = "", leftIcon, style }: HeaderProps) => {
         color={COLORS.primaryLightGreyHex}
         iconSize={FONTSIZE.size_16}
       />
-      <Typo style={styles.headerText}>{title}</Typo>
+      <Typo style={styles.headerText} fontWeight={"700"}>{title}</Typo>
       <ProfilePic />
     </View>
   );

@@ -24,7 +24,7 @@ export type Coffee = {
   imagelink_portrait?: ImageSourcePropType;
   ingredients: string;
   special_ingredient: string;
-  prices: Price;
+  price: any;
   average_rating: number;
   ratings_count: string;
   favourite: boolean;
@@ -33,11 +33,11 @@ export type Coffee = {
   buttonPressHandler: any;
 };
 
-export type Price = {
-  size: "S" | "M" | "L";
-  price: string;
-  currency: string;
-};
+// export type Price = {
+//   size: "S" | "M" | "L";
+//   price: string;
+//   currency: string;
+// };
 
 export type HeaderProps = {
   title?: string;
@@ -54,6 +54,7 @@ export type TypoProps = {
   style?: TextStyle | TextStyle[];
   textProps?: TextProps;
   numberOfLines?: number;
+  fontFamily?: string;
 };
 
 export type GradientButtonProps = {

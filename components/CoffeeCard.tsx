@@ -31,7 +31,7 @@ const CoffeeCard = ({
   imagelink_square,
   ingredients,
   special_ingredient,
-  prices,
+  price,
   average_rating,
   ratings_count,
   favourite,
@@ -39,6 +39,7 @@ const CoffeeCard = ({
   index,
   buttonPressHandler,
 }: Coffee) => {
+
   return (
     <LinearGradient
       start={{ x: 0, y: 0 }}
@@ -94,24 +95,26 @@ const CoffeeCard = ({
             size={FONTSIZE.size_14}
             color={COLORS.primaryWhiteHex}
             style={{ fontFamily: FONTFAMILY.poppins_bold }}
-        fontWeight={"600"}
+            fontWeight={"600"}
           >
-            {prices.price}
+            {price.price}
           </Typo>
         </View>
-        <TouchableOpacity onPress={() => {
-          buttonPressHandler({
-            id,
-            index,
-            type,
-            name,
-            roasted,
-            imagelink_square,
-            special_ingredient,
-            ingredients,
-            prices:[{...prices, quantity: 1}],
-          });
-        }}>
+        <TouchableOpacity
+          onPress={() => {
+            buttonPressHandler({
+              id,
+              index,
+              type,
+              name,
+              roasted,
+              imagelink_square,
+              special_ingredient,
+              ingredients,
+              prices: [{ ...price, quantity: 1 }],
+            });
+          }}
+        >
           <BGIcon
             icon={Icons.Plus}
             color={COLORS.primaryWhiteHex}

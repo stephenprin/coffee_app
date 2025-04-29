@@ -17,26 +17,24 @@ export const useStore = create(
       OrderHistoryList: [],
       addToCart: (cartItem: any) =>
         set(
-          produce((state: any) => {
+          produce((state) => {
             let found = false;
             for (let i = 0; i < state.CartList.length; i++) {
-              if (state.CartList[i].id === cartItem.id) {
+              if (state.CartList[i].id == cartItem.id) {
                 found = true;
-
                 let size = false;
                 for (let j = 0; j < state.CartList[i].prices.length; j++) {
                   if (
-                    state.CartList[i].prices[j].size === cartItem.prices[0].size
+                    state.CartList[i].prices[j].size == cartItem.prices[0].size
                   ) {
                     size = true;
-                    state.CartList[i].prices[j].quantity += cartItem.quantity;
+                    state.CartList[i].prices[j].quantity++;
                     break;
                   }
                 }
                 if (size == false) {
                   state.CartList[i].prices.push(cartItem.prices[0]);
                 }
-
                 state.CartList[i].prices.sort((a: any, b: any) => {
                   if (a.size > b.size) {
                     return -1;
@@ -46,9 +44,10 @@ export const useStore = create(
                   }
                   return 0;
                 });
+                break;
               }
             }
-            if (!found) {
+            if (found == false) {
               state.CartList.push(cartItem);
             }
           })
@@ -56,20 +55,20 @@ export const useStore = create(
 
       calculateCartPrice: () =>
         set(
-          produce((state: any) => {
-            let totalPrice = 0;
+          produce((state) => {
+            let totalprice = 0;
             for (let i = 0; i < state.CartList.length; i++) {
-              let tempPrice = 0;
+              let tempprice = 0;
               for (let j = 0; j < state.CartList[i].prices.length; j++) {
-                tempPrice +=
-                  tempPrice +
-                  parseFloat(state.CartList[i].prices[j].quantity) *
-                    state.CartList[i].prices[j].price;
+                tempprice =
+                  tempprice +
+                  parseFloat(state.CartList[i].prices[j].price) *
+                    state.CartList[i].prices[j].quantity;
               }
-              state.CartList[i].ItemPrice = tempPrice.toFixed(2).toString();
-              totalPrice += parseFloat(tempPrice.toFixed(2));
+              state.CartList[i].ItemPrice = tempprice.toFixed(2).toString();
+              totalprice = totalprice + tempprice;
             }
-            state.CartPrice = totalPrice.toFixed(2).toString();
+            state.CartPrice = totalprice.toFixed(2).toString();
           })
         ),
       addToFavouriteList: (type: string, id: string) =>
@@ -102,7 +101,6 @@ export const useStore = create(
       deleteFromFavouriteList: (type: string, id: string) =>
         set(
           produce((state: any) => {
-            
             for (let i = 0; i < state.FavoritesList.length; i++) {
               if (state.FavoritesList[i].id === id) {
                 state.FavoritesList[i].favourite = false;
@@ -125,6 +123,83 @@ export const useStore = create(
                 }
               }
             }
+          })
+        ),
+      incrementCartItemQuantity: (id: string, size: string) =>
+        set(
+          produce((state: any) => {
+            for (let i = 0; i < state.CartList.length; i++) {
+              if (state.CartList[i].id === id) {
+                for (let j = 0; j < state.CartList[i].prices.length; j++) {
+                  if (state.CartList[i].prices[j].size === size) {
+                    state.CartList[i].prices[j].quantity++;
+                    break;
+                  }
+                }
+                break;
+              }
+            }
+          })
+        ),
+      decrementCartItemQuantity: (id: string, size: string) =>
+        set(
+          produce((state: any) => {
+            for (let i = 0; i < state.CartList.length; i++) {
+              if (state.CartList[i].id === id) {
+                for (let j = 0; j < state.CartList[i].prices.length; j++) {
+                  if (state.CartList[i].prices[j].size === size) {
+                    if (state.CartList[i].prices[j].quantity > 1) {
+                      state.CartList[i].prices[j].quantity--;
+                    } else {
+                      state.CartList[i].prices.splice(j, 1);
+                    }
+                    if (state.CartList[i].prices.length === 0) {
+                      state.CartList.splice(i, 1);
+                    }
+                    break;
+                  }
+                }
+                break;
+              }
+            }
+          })
+        ),
+      clearCart: () =>
+        set(
+          produce((state: any) => {
+            state.CartList = [];
+            state.CartPrice = 0;
+          })
+        ),
+      addToOrderHistoryFromCart: () =>
+        set(
+          produce((state: any) => {
+            let temp = state.CartList.reduce(
+              (accumulator: number, currentItem: any) =>
+                accumulator + parseFloat(currentItem.ItemPrice),
+              0
+            );
+            let currentCartListTotalPrice = temp.toFixed(2).toString();
+            if (state.CartList.length > 0) {
+              state.OrderHistoryList.unshift({
+                order: state.CartList,
+                totalPrice: currentCartListTotalPrice,
+                orderDate:
+                  new Date().toLocaleString() +
+                  " " +
+                  new Date().toLocaleTimeString(),
+              });
+            } else {
+              state.OrderHistoryList.unshift({
+                order: state.CartList,
+                totalPrice: currentCartListTotalPrice,
+                orderDate:
+                  new Date().toLocaleString() +
+                  " " +
+                  new Date().toLocaleTimeString(),
+              });
+            }
+            state.CartList = [];
           })
         ),
     }),

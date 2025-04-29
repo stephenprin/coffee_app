@@ -12,15 +12,17 @@ type PaymentFooterProps = {
   price: priceProps;
   buttonPressHandler: () => void;
   buttonTitle: string;
+  style?: object;
 };
 
 const PaymentFooter = ({
   price,
   buttonPressHandler,
   buttonTitle,
+  style
 }: PaymentFooterProps) => {
   return (
-    <View style={styles.priceFooter}>
+    <View style={[styles.priceFooter, style]} >
       <View style={styles.priceContainer}>
         <Typo
           size={FONTSIZE.size_12}

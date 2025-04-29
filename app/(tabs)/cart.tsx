@@ -58,7 +58,12 @@ const Cart = () => {
             ) : (
               <View style={styles.listItemContainer}>
                 {cartList.map((item: any) => (
-                  <TouchableOpacity onPress={() => {}} key={item.id}>
+                  <TouchableOpacity onPress={() => {
+                    router.push({
+                      pathname: "/details",
+                      params: { index:item.index, id: item.id, type:item.type },
+                    })
+                  }} key={item.id}>
                     <CartItem
                       id={item.id}
                       name={item.name}
@@ -79,8 +84,12 @@ const Cart = () => {
               </View>
             )}
           </View>
-          {cartList.length !== 0 ? (
-            <PaymentFooter
+         
+        </View>
+      </ScrollView>
+      {cartList.length !== 0 ? (
+        <PaymentFooter
+            style={{ marginBottom: tabBarHeight  }}
               buttonTitle="Checkout"
               price={{ price: cartPrice, currency: "$" }}
               buttonPressHandler={() => {
@@ -90,8 +99,6 @@ const Cart = () => {
           ) : (
             <></>
           )}
-        </View>
-      </ScrollView>
     </ScreenWrapper>
   );
 };

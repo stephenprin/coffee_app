@@ -147,6 +147,7 @@ const ImageBackgroundInfo = ({
                         type == "Bean"
                           ? SPACING.space_2 + SPACING.space_2
                           : SPACING.space_2 + SPACING.space_2,
+                      justifyContent:"center"
                     }}
                   >
                     {ingredients}
@@ -241,7 +242,7 @@ const styles = StyleSheet.create({
   },
   properFirst: {
     height: 55,
-    width: 55,
+    width: 60,
     borderRadius: BORDERRADIUS.radius_20,
     justifyContent: "center",
     alignItems: "center",

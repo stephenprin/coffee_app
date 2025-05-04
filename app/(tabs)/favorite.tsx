@@ -64,7 +64,7 @@ const Favorite = () => {
                       name={item.name}
                       roasted={item.roasted}
                       type={item.type}
-                      imagelink_square={item.imagelink_square}
+                      imagelink_portrait={item.imagelink_portrait}
                       special_ingredient={item.special_ingredient}
                       average_rating={item.average_rating}
                       rating_count={item.rating_count}

@@ -18,7 +18,7 @@ const EmptyListAnimation = ({ title }: EmptyListAnimationProps) => {
         style={{ height:300 }}
           />
           <Typo size={FONTSIZE.size_16} color={COLORS.primaryOrangeHex} style={{
-    textAlign: "center",
+    textAlign: "center",marginTop:-20
           }}> { title}</Typo>
     </View>
   );

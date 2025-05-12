@@ -31,7 +31,7 @@ const Cart = () => {
   const tabBarHeight = useBottomTabBarHeight();
   const router = useRouter();
   const checkoutHandle = () => {
-    router.push("/payment");
+    router.navigate(`/payment?amount=${cartPrice}`);
   };
 
   const incrementCartItemQuantityHandler = (id: string, size: string) => {
